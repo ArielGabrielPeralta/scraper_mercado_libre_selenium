@@ -2,12 +2,18 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.webdriver.common.keys import Keys
 # Indicamos el navegador
 driver = webdriver.Chrome("./chromedriver.exe")
 
-# En este caso haremos escraper a los cartuchos hp en mercado libre
-driver.get("https://listado.mercadolibre.com.ar/cartuchos-hp#D[A:cartuchos%20hp]")
+# En este caso haremos escraper en mercado libre
+driver.get("https://www.mercadolibre.com.ar/")
+
+#Ahora a nuestra variable busqueda le damos la cadena de texto que deseamos introducir en el navegador
+busqueda="cartuchos hp"
+#Tipeamos busqueda en la barra
+
+#Enter en la barra de busqueda
 
 # Obtenemos todos los elementos cartuchos
 cartuchos = driver.find_elements_by_xpath('//li[@class="ui-search-layout__item"]')
