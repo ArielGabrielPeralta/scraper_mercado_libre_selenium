@@ -3,7 +3,7 @@
 ### Funciones principales
 
 Este scraper permite:
-* Introducir un texto en la barra de busqueda (en desarrollo).
+* Introducir un texto en la barra de busqueda.
 * Introducir el numero de paginas de las cuales se quisieran extraer datos.
 * Recopilar los datos **(en un archivo externo)** del titular y el precio del producto.
 
@@ -24,6 +24,6 @@ Se requiere:
 Ejecutamos la linea de codigo:
 * $ pip install -r requirements.txt
 
-Una vez instalado y modificado los datos del archivo **selenium_scraper.py** corremos el mismo:
+Una vez instalado **requirements.txt** y modificado los datos del archivo **selenium_scraper.py** corremos el mismo:
 * $python selenium_scraper.py
  
