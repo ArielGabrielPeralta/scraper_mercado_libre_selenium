@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from time import sleep
+import pandas as pd
 
 # Indicamos el navegador
 driver = webdriver.Chrome("./chromedriver.exe")
@@ -11,15 +12,16 @@ driver = webdriver.Chrome("./chromedriver.exe")
 # En este caso haremos escraper en mercado libre
 driver.get("https://www.mercadolibre.com.ar/")
 
-#Ahora a nuestra variable busqueda le damos la cadena de texto que deseamos introducir en la barra de busqueda
-busqueda="cartuchos hp"
+# Ahora a nuestra variable busqueda le damos la cadena de texto que deseamos introducir en la barra de busqueda
+busqueda = "cartuchos hp"
 
-#Identificamos la barra de busqueda
+# Identificamos la barra de busqueda
 barra_busqueda = driver.find_element_by_xpath('/html/body/header/div/form/input[@class="nav-search-input"]')
 
-#Tipeamos busqueda en la barra
+# Tipeamos busqueda en la barra
 barra_busqueda.send_keys(busqueda)
-#Enter en la barra de busqueda
+
+# Enter en la barra de busqueda
 barra_busqueda.send_keys(Keys.ENTER)
 
 sleep(3)
@@ -39,12 +41,14 @@ cookies = WebDriverWait(driver, 20).until(
     EC.element_to_be_clickable((By.XPATH, '//*[@id="cookieDisclaimerButton"]')))
 cookies.click()
 
-# Como iniciamos en la pagina uno scrapeamos todos los elemenos productos de esa pagina
+# Creamos una lista que contenga las listas con el titulo y el precio de los productos
+todos_productos = []
+
+# Como iniciamos en la pagina uno scrapeamos todos los elemenos productos de esa pagina y los guardamos en la lista
 for producto in productos:
     title = producto.find_element_by_xpath('.//h2[@class="ui-search-item__title"]').text
-    print(title)
     price = producto.find_element_by_xpath('.//span[@class="price-tag-fraction"]').text
-    print(price)
+    todos_productos.append([title, price])
 
 # Click a la siguiente pagina
 path = '//main//div/div[1]/section/div[3]/ul/li/a[@title="Siguiente" and @role="button"]'
@@ -62,18 +66,23 @@ for i in range(num_pages):
         driver.find_element_by_xpath('//li[@class="andes-pagination__button andes-pagination__button--current"]').text)
     # Si la pagina en la que entró el for es menor al numero de paginas a scrapear seguimos la operación
     if i < num_pages and actual_page == i + 1:
-        # Obntener los elementos cartuchos
+        # Obntener los productos
         productos = driver.find_elements_by_xpath('//li[@class="ui-search-layout__item"]')
-        # Scrapeamos todos los elemenos cartuchos de esa pagina
+        # Scrapeamos todos los productos de esa pagina y los guardamos en la lista
         for producto in productos:
             price = producto.find_element_by_xpath('.//span[@class="price-tag-fraction"]').text
-            print(price)
             title = producto.find_element_by_xpath('.//h2[@class="ui-search-item__title"]').text
-            print(title)
+            todos_productos.append([title, price])
         # Click a la siguiente pagina
         path = '//main//div/div[1]/section/div[3]/ul/li/a[@title="Siguiente" and @role="button"]'
         pag_siguiente = WebDriverWait(driver, 20).until(
             EC.element_to_be_clickable((By.XPATH, path)))
         pag_siguiente.click()
+
+#Generamos un archivo de excel y guardamos la información en ese archivo
+df1 = pd.DataFrame(todos_productos, columns=["Titulo", "Precio"])
+writer = pd.ExcelWriter('productos.xlsx')
+df1.to_excel(writer)
+writer.save()
 
 print("Programa finalizado con exito")
