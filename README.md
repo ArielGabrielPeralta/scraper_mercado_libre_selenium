@@ -14,6 +14,15 @@ Este scraper permite:
 Proximo a implementar:
 
 * Aplicar los filtros deseados.
+* Implementar los parametros por consola al ejecutar el programa.
+* Agregar una funcionalidad de **BOT** que:
+    * Monitoree una publicación dada:
+      * Finalización.
+      * Baja o suba de precio.
+      * Preguntas nuevas.  
+    * Busque cada "x" tiempo un producto con ciertas caracteristicas.
+      
+    * ***En ambos casos se enviará un mail con las actualizaciones***
 
 **Advertencia:** Solo funciona para la pagina de Mercado Libre.
 
@@ -30,5 +39,5 @@ Ejecutamos la linea de codigo:
 
 Una vez instalado **requirements.txt** y modificado los datos del archivo **selenium_scraper.py** corremos el mismo:
 
-* $python selenium_scraper.py
+* $ python selenium_scraper.py
  
